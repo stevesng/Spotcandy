@@ -1,0 +1,97 @@
+No. of watchers: <%= @watchers.count %>
+<ol>
+<% @watchers.each do |w| %>
+<li><%= w.email %></li>
+<% end %>
+</ol>
+
+
+<%= form_for(@candy, :html => { :multipart => true}) do |f| %>
+  <% if @candy.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@candy.errors.count, "error") %> prohibited this candy from being saved:</h2>
+      <ul>
+      <% @candy.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :pid %><br />
+    <%= f.text_field :pid %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :venue %><br />
+    <%= @candy.venue.name %>
+  </div>
+  
+  <% if !@candy.users.empty? %>
+  <div class="field">
+    <%= f.label :scout %><br />
+    <%= @candy.users.first.email %>
+  </div>
+  <% end %>
+  <div class="field">
+  <%= f.label :Photo %><br />
+  <a href="<%= @candy.get_pic('pic') %>" target="_blank">
+  <%= image_tag @candy.get_pic('thumbnail'), :class => 'admin_candy_photo' %>
+  </a>
+  <%= link_to "Update Photo", {:controller => 'candies', :action => 'update_profile', :id => @candy.id, :format => 'json'} %>
+  </div>
+
+  <div class="field">
+    <%= f.label :gender %><br />
+    I'm a <strong><%= @candy.data['gender'] %></strong>
+  </div>
+  
+  <div class="field">
+      <ul>
+      <% @candy.photos.each do |photo| %>
+        <% f.fields_for :photos, photo do |photo_fields| %>
+          <li>
+          <%= link_to (image_tag photo.photo.url(:thumb)), photo.photo.url(:original), :target => '_blank' %>
+          <%= link_to 'Remove', {:controller => 'photos', :action => 'destroy', :id => photo.id}, :confirm => 'Are you sure?', :method => :delete %>
+          </li>
+        <% end %>
+      <% end %>
+      </ul>
+  </div>
+  
+  <div class="field">
+    <%= f.label :default_photo %><br />
+    <%= f.text_field :default_photo %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :flag_status %><br />
+            <%= select(:candy, :flag_status, options_for_select([['None', 0], ['Pending', 1], ['Flagged', 2]], @candy.flag_status)) %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :reject %><br />
+    <%= f.check_box :rejected %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :is_candy %><br />
+    <%= f.check_box :is_candy %>
+  </div>
+  
+  <div class="field">
+    <%= f.label 'Post to Facebook' %><br />
+    <%= f.check_box :facebook_update %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :send_mail %><br />
+    <%= check_box_tag 'send_mail', 1, true %>
+  </div>
+  
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

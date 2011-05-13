@@ -1,0 +1,89 @@
+<script>
+
+var get_candies_grid = function(type){
+  $('#candies_loading').show();
+  $('#candies_grid').hide();
+  $.get('/candies-grid', {type:type},function(data) {
+    if(data){
+      $('#candies_grid').html(data);
+      $('#candies_grid').show();
+      $('#candies_loading').hide();
+    }
+  });
+}
+
+$(function() {
+
+$('a.recent').click(function(e){
+  get_candies_grid('recent');
+});
+
+$('a.popular').click(function(e){
+  get_candies_grid('popular');
+});
+
+$('a.nearby').click(function(e){
+  get_candies_grid('nearby');
+});
+
+$('a.all').click(function(e){
+  get_candies_grid();
+});
+                      
+$('a.refresh_photo').live('click', function(e){
+  var request = $(this).attr('href');
+  $('#photo_popup > *').hide();
+  $.get(request,function(data) {
+    if(data){
+      var candy = data.candy.candy;
+      $('li#'+candy.id+' img').attr('src', data.thumbnail);
+      $('#photo_popup img').attr('src', data.pic);
+      $('#photo_popup > *').show();
+    }
+  });
+});
+
+$('ul.grid li a').live('click', function(e){
+  e.preventDefault();
+  $( "#photo_popup" ).html('');
+  $( "#photo_popup" ).dialog('open');
+  
+  if($(this).hasClass('discovered')){
+    $( "#photo_popup" ).dialog({title:'Discovered by You!'});
+  }else{
+    $( "#photo_popup" ).dialog({title:''});
+  }
+  
+  $.get('/candy/'+$(this).attr('id')+'/display', function(data) {
+    if(data){
+      
+      $( "#photo_popup" ).html(data);
+      
+      // Close photo when click outside
+      $('.ui-widget-overlay').bind('click', function(e){
+        $('#photo_popup').dialog('close');
+      });
+    }
+  });
+});
+
+get_candies_grid('recent');
+
+});
+</script>
+<% content_for :left_nav do %>
+  <% if current_user %>
+  <div class="nav_button">
+  <%= link_to "Back", root_url, :onClick => 'history.back();' %>
+  </div>
+  <% end %>
+<% end %>
+<a name="top"></a>
+<%= link_to "Recent", '#', :class => 'nolink recent' %>
+ | <%= link_to "Popular", '#', :class => 'nolink popular' %> 
+ <% if current_user && !session[:trending].nil? %>| <%= link_to "Nearby", '#', :class => 'nolink nearby' %><% end %>
+ | <%= link_to "All", '#', :class => 'nolink all' %>
+<div id="candies_loading" class="loading"></div>
+<div id="candies_grid"></div>
+<%= render 'login' %>
+<%= render '/windows/photo_popup' %>

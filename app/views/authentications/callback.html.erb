@@ -1,0 +1,5 @@
+<p>
+You already have an account with the email <strong><%= @user['email'] %></strong>.<br />
+Please <%= link_to "login", user_session_path %> to your account and link up the profile.
+</p>
+<%= debug(@auth) %>

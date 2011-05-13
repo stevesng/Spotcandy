@@ -1,0 +1,21 @@
+
+<p>
+  <b>Pid:</b>
+  <%= @candy.pid %>
+</p>
+
+<p>
+  <b>Photo:</b>
+  <a href="<%= @candy.get_pic('original') %>" target="_blank">
+  <%= image_tag @candy.get_pic('thumbnail') %>
+  </a>
+</p>
+
+<p>
+  <b>Score:</b>
+  <%= @candy.score %>
+</p>
+
+
+<%= link_to 'Edit', edit_candy_path(@candy) %> |
+<%= link_to 'Back', candies_path %>

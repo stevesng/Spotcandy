@@ -1,0 +1,448 @@
+<script>
+
+var candy_link = '';
+var alert_link = null;
+var offset = 0;
+var watch_yes = "<%= @watch_yes %>";
+var watch_no = "<%= @watch_no %>";
+
+function recommended(data){
+
+  $('#done').dialog('close');
+  var candy = data.candy.candy
+  var candy_photo = $('li#candy_'+candy.id+' .pic img').attr('src');
+  $('li#candy_'+candy.id+' span.recommend').addClass('hidden');
+  $('li#candy_'+candy.id+' div.flag').addClass('hidden');
+  $('li#candy_'+candy.id+' span.score').removeClass('hidden');
+  $('li#candy_'+candy.id+' span.score span').html(candy.score);
+  $('li#candy_'+candy.id+' .action').removeClass('pic_loading');
+  $('li#candy_'+candy.id+' .action_wrapper').css('visibility', 'visible');
+  
+  $('#candy_added .pic img').attr('src', candy_photo);
+  $('#candy_added #candy_message').html(data.message);
+  $('#candy_added #candy_caption').html(data.caption);
+  
+  if(candy.score == 1){
+    //$('#candy_added').css('background','#F28911');
+    $( "#candy_added" ).dialog({dialogClass : 'candy_added'});
+  }else{
+    //$('#candy_added').css('background','#E01B84');
+    
+    $( "#candy_added" ).dialog({dialogClass : 'spotted'});
+    
+  }
+  
+  
+  $( "#candy_added" ).dialog( "open" );
+}
+
+var close_recommend = function(){
+    alert_link.parents('.action').removeClass('pic_loading');
+    alert_link.parents('.action_wrapper').css('visibility', 'visible');
+}
+
+var report_candy = function(){
+
+  $('#done').dialog({ 
+    dialogClass: 'noclose',
+    closeOnEscape: false,
+    buttons: [] 
+  });
+  
+  $('#done').dialog('open');
+  $('#done').addClass('loading');
+  $('#done').html("<div style='margin-top:0' class='grey'>Please wait...</div>");
+  
+  
+  var request = alert_link.attr('href');
+
+  $.get(request, function(data) {
+    
+    var message = data.result != null ? "Thank you for reporting, we have been notified." : "Yep, we know :)";
+    $('#done').removeClass('loading');
+    $('#done').html(message);
+    
+    
+    $('#done').dialog({ 
+        close: function(e){
+          if(data.result != null){
+          alert_link.parents('li').slideUp();
+          }
+        },
+        buttons: [{
+        text: "Close",
+        click: function() { 
+        $(this).dialog("close");
+         }
+    }] });
+    
+  });
+  
+}
+
+var recommend_candy = function(){
+  var request = alert_link.attr('href');
+  //alert_link.parents('.action').addClass('pic_loading');
+  //alert_link.parents('.action_wrapper').css('visibility', 'hidden');
+  
+  $('#done').dialog({ 
+    close: function(e){},
+    dialogClass: 'noclose',
+    closeOnEscape: false,
+    buttons: [] });
+  $('#done').addClass('loading');
+  $('#done').html("<div style='margin-top:0' class='grey'>Sending request...</div>");
+  $('#done').dialog('open');
+  
+  $.get(request, function(data) {recommended(data);});
+}
+
+var remove_candy = function(){
+  var request = alert_link.attr('href');
+  alert_link.parents('.action').addClass('pic_loading');
+  alert_link.parents('.action_wrapper').css('visibility', 'hidden');
+  
+  $.get(request, function(data) {
+    if(data){
+    $('li#candy_'+data.candy.candy.id+' span.recommend').removeClass('hidden');
+    $('li#candy_'+data.candy.candy.id+' span.remove').addClass('hidden');
+    $('li#candy_'+data.candy.candy.id+' .flag').removeClass('hidden');
+    alert_link.parents('.action').removeClass('pic_loading');
+    alert_link.parents('.action_wrapper').css('visibility', 'visible');
+    
+    }else{alert("Error!");}
+  });
+}
+
+var refresh_photo = function(){
+  
+
+}
+
+function get_candies(refresh){
+  $('#more_candies').hide();
+  $("#candies_loading").show();
+  $.get('/venue/people', {id:<%= @venue.id %>, refresh:refresh, offset:offset}, function(data) {
+    
+    if(data){
+      $('.ehide').show();
+      $("#candies_loading").hide();
+      $('#candies_list').show();
+      if(data != 0){
+        $('#no_one').hide();
+        offset++;
+        $('#more_candies').show();
+        $('#candies_list ul.list').append(data);
+        
+        // Remove candy
+        /*
+        $("a.remove_candy")
+        .bind("ajax:beforeSend", function(xhr, settings){
+          $(this).html('');
+          //$(this).addClass('pic_loading');
+          //$(this).prev('.text').addClass('pic_loading');
+          $(this).parents('.action').addClass('pic_loading');
+          $(this).parents('.action_wrapper').css('visibility', 'hidden');
+        })
+        .bind("ajax:success", function(event, data, status, xhr){
+          //$('li#candy_'+data.candy.candy.id).slideUp('slow');
+          $('li#candy_'+data.candy.candy.id+' span.recommend').removeClass('hidden');
+          $('li#candy_'+data.candy.candy.id+' span.remove').addClass('hidden');
+          $(this).parents('.action').removeClass('pic_loading');
+          $(this).parents('.action_wrapper').css('visibility', 'visible');
+          //alert(data.candy.candy.id);
+        });
+        */
+        
+        $("a.refresh_photo")
+        .bind("ajax:beforeSend", function(xhr, settings){
+          $(this).hide();
+          photo = $(this).prev().find('a img');
+          photo.hide();
+        })
+        .bind("ajax:success", function(event, data, status, xhr){
+          var image = '<img height="75" src="'+data.thumbnail+'" width="75">';
+          $('li#candy_'+data.candy.candy.id+' .pic a').attr('href', data.pic);
+          $('li#candy_'+data.candy.candy.id+' .pic a').html(image);
+          $(this).show();
+          photo.show();
+        });
+        
+      }else{
+        $('#no_one').show();
+      }
+    }else{alert("error");}
+  });
+}
+
+$(document).ready(function(){
+  
+  $( "#done" ).dialog({ 
+                       autoOpen: false,
+                       modal: true,
+                       disabled: true,
+                       draggable: false,
+                       resizable: false
+                      });
+                      
+  // Add Venue
+  
+  /*
+  $('#add_venue a').click(function(e){
+    e.preventDefault();
+    var r=confirm("Confirm Add Venue to Favorites?");
+    if (r==true){
+      alert("You pressed OK!");
+    }
+    
+  });
+  */
+  
+  // Recommend candy  
+  $('#candies_list .pic a.nolink').live('click', function(e){
+    e.preventDefault();
+    $( "#photo_popup img").attr('src', $(this).attr('href'));
+    $( "#photo_popup").dialog('open');
+    
+    // Close photo when click outside
+    $('.ui-widget-overlay').bind('click', function(e){
+      $('#photo_popup').dialog('close');
+    });
+  });
+  
+  /* Report */
+  
+  /*
+  $('#candies_list a.report').live('click', function(e){
+    e.preventDefault();
+    alert_link = $(this);
+    var r=confirm("Confirm?");
+    if (r==true){report_candy();}
+  });
+  */
+  
+  
+  $('#candies_list a.report').live('click', function(e){
+    e.preventDefault();
+    
+    alert_link = $(this);
+    
+    var photo = $(this).parents('li').find('.pic a img').attr('src');
+    
+    var confirm_content =
+    '<div align="center"><div class="pic"><img src="'+photo+'" width="100" height="100" /></div></div>'+
+    "<div class='confirm_message'>Doesn't look attractive to you?</div>";
+    
+    $( "#confirm" ).html(confirm_content);
+    $( "#confirm" ).dialog({ 
+    buttons: {
+      "Yes": function() {
+      report_candy();
+      
+      $( this ).dialog( "close" );
+      
+      
+      },
+      Cancel: function() {
+      $( this ).dialog( "close" );
+      }
+    } });
+    
+    $( "#confirm" ).dialog('open');
+    
+  });
+  
+  
+  
+  /* Recommend */
+  $('#candies_list a.recommend').live('click', function(e){
+    e.preventDefault();
+    alert_link = $(this);
+    
+    $( "#confirm" ).dialog({ 
+    buttons: {
+      "Yes": function() {
+      recommend_candy();
+      $( this ).dialog( "close" );
+
+      
+      },
+      Cancel: function() {
+      $( this ).dialog( "close" );
+      }
+    } });
+    
+    var photo = $(this).parents('li').find('.pic a img').attr('src');
+    
+    var confirm_content =
+    '<div align="center"><div class="pic"><img src="'+photo+'" width="100" height="100" /></div></div>'+
+    '<div class="confirm_message">Recommend this person for Spotcandy?</div>';
+    
+    $( "#confirm" ).html(confirm_content);
+    candy_link = $(this).attr('href');
+
+    $( "#confirm" ).dialog('open');
+  });
+  
+  
+  /* Remove candy */
+  $('#candies_list a.remove_candy').live('click', function(e){
+    alert_link = $(this);
+    var photo = $(this).parents('li').find('.pic a img').attr('src');
+    
+    var confirm_content =
+    '<div align="center"><div class="pic"><img src="'+photo+'" width="100" height="100" /></div></div>'+
+    '<div class="confirm_message red">Confirm removing this candy?</div>';
+    
+    $( "#confirm" ).html(confirm_content);
+    $( "#confirm" ).dialog({ 
+    buttons: {
+      "Yes": function() {
+      remove_candy();
+      $( this ).dialog( "close" );
+      
+      },
+      Cancel: function() {
+      $( this ).dialog( "close" );
+      }
+    } });
+    
+    $( "#confirm" ).dialog('open');
+    
+  });
+  
+  $('a#refresh_candies').click(function(e){
+    e.preventDefault();
+    offset = 0;
+    $('#candies_list ul.list').html('');
+    $('#candies_list').hide();
+    get_candies(1);
+  });
+  
+  $('#more_candies a').click(function(e){
+    get_candies();
+  });
+  
+  // Add Venue To Fav.
+  $(".add_venue a")
+  .bind("ajax:beforeSend", function(xhr, settings){
+    $('#venue_action').addClass('pic_loading');
+  })
+  .bind("ajax:success", function(event, data, status, xhr){
+    $('#venue_action').removeClass('pic_loading');
+    $('.add_venue').addClass('fav_venue');
+  });
+  
+  // Watch Venue
+  $(".watch_venue a")
+  .bind("ajax:beforeSend", function(xhr, settings){
+    $('#venue_action').addClass('pic_loading');
+  })
+  .bind("ajax:success", function(event, data, status, xhr){
+    if(data){
+      if(data.favorite.watched){
+        if(!$('.add_venue').hasClass('fav_venue')){$('.add_venue').addClass('fav_venue');}
+        $('.watch_venue').addClass('active');
+        $(this).attr('data-confirm', watch_no);
+      }else{
+      $('.watch_venue').removeClass('active');
+      $(this).attr('data-confirm', watch_yes);
+      }
+    }
+    $('#venue_action').removeClass('pic_loading');
+  });
+  
+  <% if !@locked %>get_candies();<% end %>
+  
+  /*
+  $('a.nolink').live('click', function(e){
+    var candy_id = $(this).attr('href');
+    var photo = $('li#candy_'+candy_id+' .pic a img');
+    photo.hide();
+
+    var refresh = $(this);
+    refresh.hide();
+    $.get('/candy/'+candy_id+'/update_profile', function(data) {
+      
+      if(data){
+        $('li#candy_'+candy_id+' .pic a').html(data)
+      }else{alert("error");}
+      
+      refresh.show();
+      
+    });
+  });
+  */
+
+});
+
+</script>
+<% content_for :left_nav do %>
+  <% if session[:venue_back] %>
+  <div class="nav_button">
+  <% if session[:venue_back] == 'portfolio' || session[:venue_back] == 'leaderboard' %>
+  <% 
+  back_attr = {:controller => 'users', :action => 'candies', :id => session[:venue_back_scout]}
+  %>
+  
+  <% elsif session[:venue_back] == 'stream' %>
+  <% back_attr = {:controller => 'pages', :action => 'stream'} %>
+  <% elsif session[:venue_back] == 'venues' %>
+  <% back_attr = {:controller => 'venues', :action => 'search'} %>
+  <% end %>
+  <%= link_to "Back", back_attr, :onClick => 'history.back();' %>
+  </div>
+  <% end %>
+<% end %>
+<div class="venue_refresh refresh">
+  <div id="venue_action" class="fr">
+    <div class="add_venue fr<%= " fav_venue" if @user_venues.include?(@venue.id) %>"><%= link_to (image_tag 'add_venue.png'), 
+    {:controller => 'venues', :action => 'add', :id => @venue.id, :format => 'json'}, 
+    :method => 'post', :remote => true, :confirm => 'Add venue to Favorites?' %>
+    </div>
+    <div class="watch_venue fr<%= ' active' if @favorite && @favorite.watched %>"><%= link_to (image_tag 'eye.png'), 
+    {:controller => 'venues', :action => 'watch', :id => @venue.id, :format => 'json'},
+    :remote => true, :method => 'post', :confirm => @favorite && @favorite.watched ? @watch_no : @watch_yes %></div>
+  </div>
+  <% if @queen %>
+  <div class="clear"></div>
+  <div class="queen fr" align="center">
+    
+    <div class="pic s75 pic_loading shadow">  
+    <%= link_to (image_tag @queen.get_pic('thumbnail'), :size => '75x75'), '#' , :target => '_blank', :class => 'nolink',
+        :href => @queen.get_pic('original') %>
+    
+    </div>
+    <div class="clear"></div>
+    <div class="queen_icon"></div>
+  </div>
+  <% end %>
+</div>
+<div><%= @venue.state %></div>
+<h1 id="venue_title"><%= @venue.name %></h1>
+<div class="address"><%= @venue.location['address'] %></div>
+<div class="clear"></div>
+<div id="venue_candy_count">
+<%= @candy_count > 0 ? "#{pluralize(@candy_count, 'candy')} spotted here" : "No candy spotted here yet" %>.
+</div>
+
+<% if !@locked %>
+<div id="candies_list">
+  <ul class="list">
+  </ul>
+  <div id="no_one" class="hidden">
+  No more candies.
+  </div>
+</div>
+<div id="candies_loading" class="loading" style="display:none;"></div>
+
+<div class="ehide" style="display:none;">
+  <div id="more_candies"><a href="#" class="nolink">Load More</a></div>
+  <%= render '/windows/candy_added' %>
+  <%= render '/windows/photo_popup' %>
+  <%= render '/windows/confirm' %>
+  <%= render '/windows/done' %>
+</div>
+<% else %>
+<%= render 'locked' %>
+<% end %>

@@ -1,0 +1,11 @@
+<% if !@candies.empty? %>
+<ul class="grid">
+<% @candies.each do |c| %>
+<li class="pic_loading<%= ' discovered' if current_user && !c.users.empty? && (c.users.first.id == current_user.id && c.is_candy) %>">
+<%= link_to (image_tag c.get_pic('thumbnail'), :size => '91x91'), '#', :id => c.id, :class => 'nolink' %>
+</li>
+<% end %>
+</ul>
+<% else %>
+<div align="left" style="padding:10px 0">There are no candies.</div>
+<% end %>

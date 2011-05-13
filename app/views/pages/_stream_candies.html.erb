@@ -1,0 +1,27 @@
+<%= javascript_include_tag "jquery_vticker.js" %>
+<div class="candy" style="margin-top:0;">
+<ul>
+<% @candies.each do |candy| %>
+  <li>
+  <div class="stream_pic">
+  <%= image_tag candy.get_pic('thumbnail'), :size => "75x75", :class => 'fl' %>
+    <div class="stream_content">
+  Spotted @ <br />
+      <span class="venue">
+      <%= link_to "#{candy.venue.name}, #{candy.venue.location['state']}", {:controller => 'venues', :action => 'candies', :id => candy.venue_id} %>
+      </span><br /><%= "#{time_ago_in_words(candy.created_at)} ago." %> 
+  </div>
+  </div>
+
+  </li>
+<% end %>
+</ul>
+</div>
+<script>
+$(function() { 
+$('.candy').vTicker({
+height: 265,
+mousePause: false
+});
+});
+</script>

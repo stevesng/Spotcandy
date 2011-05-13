@@ -1,0 +1,24 @@
+
+<p>
+  <b>Name:</b>
+  <%= @venue.name %>
+</p>
+
+<p>
+  <b>Unlocked:</b>
+  <%= @venue.locked %>
+</p>
+
+<p>
+  <b>Foursquare:</b>
+  <%= @venue.foursquare_id %>
+</p>
+
+<p>
+  <b>Location:</b>
+  <%= @venue.location %>
+</p>
+
+
+<%= link_to 'Edit', edit_venue_path(@venue) %> |
+<%= link_to 'Back', venues_path %>

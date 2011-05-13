@@ -1,0 +1,3 @@
+<%= image_tag @candy.get_pic('original') %>
+<div class="spotted">Spotted @ <%= link_to "#{@candy.venue.name}, #{@candy.venue.location['state']}", {:controller => 'venues', :action => 'candies', :id => @candy.venue_id} %> <br /><%= "#{time_ago_in_words(@candy.created_at)} ago" %>.
+<%= link_to '', {:controller => 'candies', :action => 'update_profile', :id => @candy.id, :format => 'json'}, :class => 'nolink refresh_photo fr' %></div>

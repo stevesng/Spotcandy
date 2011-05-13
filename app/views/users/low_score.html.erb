@@ -1,0 +1,15 @@
+<% content_for :left_nav do %>
+<div class="nav_button"><%= link_to "Back", :back %></div>
+<% end %>
+<div id="low_score_message">
+You need <strong><%= @score_needed %></strong> more points <br /> to view this scout's portfolio.
+</div>
+
+<div align="center"><h2>Tips for earning points</h2></div>
+<div id="candy_tips">
+<ul>
+<li>Explore more places for new candies.</li>
+<li>Import venues from your Foursquare checkins to access new places.</li>
+<li>Candies scouted by you earned you more points. So be the first to discover new candies!</li>
+</ul>
+</div>

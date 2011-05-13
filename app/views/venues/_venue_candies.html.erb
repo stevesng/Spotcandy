@@ -1,0 +1,41 @@
+<% if !@candies.empty? %>
+<% @candies.each do |candy| %>
+  <li id="<%= "candy_#{candy.id}" %>">
+  <div class="pic s75 pic_loading shadow fl">
+
+  <%= link_to (image_tag candy.get_pic('thumbnail'), :size => '75x75'), '#' , :target => '_blank', :class => 'nolink',
+    :href => candy.get_pic('original') %>
+  
+  </div>
+  <%= link_to "", {:controller => 'candies', :action => 'update_profile', :id => candy.id, :format => 'json'}, 
+  :method => :post, :remote => true, :class => 'refresh_photo' %>
+
+  <div class="action fr">
+    <div class="checkin">
+    <%= "#{time_ago_in_words(candy.created_at).capitalize} ago." %>
+    </div>
+    <div class="action_wrapper">
+      <div class="text">
+        <span class="recommend<%= " hidden" if @user_candies.include?(candy.id) %>">
+        <%= link_to "Recommend", {:controller => 'users', :action => 'add_candy', :id => candy.id, :venue_id => @venue.id, :format => 'json'}, 
+        :class => 'recommend' %>
+        </span>
+        
+        <span class="score<%= " hidden" if !@user_candies.include?(candy.id) %>">
+        + <span><%= candy.score %></span>
+        </span>
+      </div>
+      <div class="flag<%= " hidden" if @user_candies.include?(candy.id) %>">
+      <%= link_to "Not a Candy", {:controller => 'candies', :action => 'flag', :id => candy.id, 
+      :format => 'json'},
+      :class => 'report', 'onClick' => 'return false;' %>
+      </div>
+    </div>
+  </div>
+  <div class="clear"></div>
+  </li>
+<% end %>
+
+<% else %>
+0
+<% end %>

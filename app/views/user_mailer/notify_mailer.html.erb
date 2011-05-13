@@ -1,0 +1,23 @@
+<div align="center">
+  <br />
+  <font style="font-family:Georgia; font-size:16px; line-height: 24px;">
+    This candy was spotted @<br />
+    <a href="http://m.spotcandy.com/venue/<%= @venue.id %>/candies" style="font-size:14px; color:#E01B84; text-decoration:none;">
+    <strong><%= @venue.name %>, <%= @venue.location['state'] %></strong></a><br /><%= "#{time_ago_in_words(@candy.created_at)} ago!" %> 
+    <br /><br />
+
+    <div style="padding:5px; border:1px solid #ccc; display:block; width:110px; height:110px;">
+    <a href="http://m.spotcandy.com/venue/<%= @candy.venue_id %>/candies">
+    <%= image_tag @candy.get_pic('thumbnail'), :alt => "Candy Photo", :style => 'border:none' %>
+    </a>
+    </div>
+  </font>
+  <br />
+  She now has <%= pluralize(@candy.score, 'recommendation') %>.
+  <br />
+  <%= render 'candies_spotted' %>
+  <hr>
+  <p style="color:#666;">
+  <span style="font-size:smaller;">You are receiving this email because you have subscribed to our candy notifications. <br />To unsubscribe, please <a href="http://m.spotcandy.com/users/edit" style="color:#666; text-decoration:none;"><u>change your settings</u></a>.</span>
+  </p>
+</div>

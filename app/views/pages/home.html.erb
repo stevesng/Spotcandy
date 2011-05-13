@@ -1,0 +1,63 @@
+<% content_for :home_bottom do %>
+<!--
+  <% if action_name == 'home' && !current_user %>
+  <%= javascript_include_tag "jquery.cycle.min" %>
+  <script>
+  $(document).ready(function(){
+  
+    $('#recent_candies .twelvecol').cycle({
+    fx: 'fade' // choose your transition type, ex: fade, scrollUp, shuffle, etc...
+    });
+
+  });
+  </script>
+<div id="recent_candies">
+  <div class="container">
+      <div class="row">
+          <div class="twelvecol">
+    <% @candies.each do |candy| %>
+    <div class="candy">
+      <div class="pic"><%= image_tag candy.get_pic('thumbnail'), :size => "75x75" %></div>
+      <div class="content">
+      Spotted @ <br />
+      <span class="venue"><%= "#{candy.venue.name}, #{candy.venue.location['state']}" %></span><br /><%= "#{time_ago_in_words(candy.created_at)} ago." %>
+      </div>
+    </div>
+    <% end %>
+          </div>
+
+      </div>
+      
+  </div>
+
+</div>
+
+
+  <% end %>
+  -->
+<% end %>
+
+<% if current_user %>
+<ul class="list">
+<li><%= link_to "SEARCH CANDIES", search_candies_path %></li>
+<li><%= link_to "GALLERY (Enjoy!)", {:controller => 'pages', :action => 'candies'} %></li>
+<li><%= link_to "FAQ", faq_path %></li>
+<li><%= link_to "PROFILE", current_user %></li>
+</ul>
+
+<div id="footer">
+<div class="fr"><%= link_to "Logout", destroy_user_session_path %></div>
+<% if request.env['HTTP_HOST'] != 'spotcandy.com.localhost:3000' %>
+<div id="facebook_like" class="fr">
+<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FSpotcandy%2F141205252611125&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
+</div>
+<% end %>
+
+<% else %>
+<%= render 'grid_candies' %>
+<% end %>
+</div>
+
+
+
+

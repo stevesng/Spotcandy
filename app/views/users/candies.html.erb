@@ -1,0 +1,145 @@
+<script>
+offset = <%= session[:candies_offset] %>;
+alert_link = null;
+
+var remove_candy = function(){
+  var request = alert_link.attr('href');
+  
+  alert_link.parents('.remove_candy').addClass('pic_loading');
+  alert_link.parents('.remove_candy .text').css('visibility', 'hidden');
+  
+  $.get(request, function(data) {
+    if(data){
+    $('li#candy_'+data.candy.candy.id).slideUp();
+    }else{alert('Error!');}
+  });
+  
+}
+
+$(function() {  
+  $('#user_candies .pic a.nolink').live('click', function(e){
+    var request = $(this).attr('href');
+    if(request != '#'){
+    e.preventDefault();
+    $( "#photo_popup img").attr('src', $(this).attr('href'));
+    $( "#photo_popup").dialog('open');
+    
+    // Close photo when click outside
+    $('.ui-widget-overlay').bind('click', function(e){
+      $('#photo_popup').dialog('close');
+    });
+    }else{alert("Unable to view original photo.");}
+  });
+  
+  $( "#candy_added" ).dialog({
+  close: function(e){
+  alert_link.parents('li').slideUp();
+  }});
+  
+  function get_candies(){
+    $('#candies_loading').show();
+    $('.preload').hide();
+    $.get('/scout/<%= current_user.id %>/candies', {offset:offset}, function(data) {
+      
+      if(data){
+        offset++;
+        
+        $('#user_candies ul.list').append(data);
+        $('#candies_loading').hide();
+        $('.preload').show();
+        
+        // Refresh photo
+        $("a.refresh_photo")
+        .bind("ajax:beforeSend", function(xhr, settings){
+          $(this).hide();
+          photo = $(this).prev().find('a img');
+          photo.hide();
+        })
+        .bind("ajax:success", function(event, data, status, xhr){
+          var image = '<img height="75" src="'+data.thumbnail+'" width="75">';
+          $('li#candy_'+data.candy.candy.id+' .pic a').attr('href', data.pic);
+          $('li#candy_'+data.candy.candy.id+' .pic a').html(image);
+          $(this).show();
+          photo.show();
+        });
+        
+        /* Remove candy */
+        $('#user_candies a.remove_candy').live('click', function(e){
+          alert_link = $(this);
+          
+          var photo = $(this).parents('li').find('.pic a img').attr('src');
+          
+          var confirm_content =
+          '<div align="center"><div class="pic"><img src="'+photo+'" width="100" height="100" /></div></div>'+
+          '<div class="confirm_message red">Confirm removing this candy?</div>';
+          
+          $( "#confirm" ).html(confirm_content);
+          $( "#confirm" ).dialog({ 
+          buttons: {
+            "Yes": function() {
+            remove_candy();
+            $( this ).dialog( "close" );
+            
+            },
+            Cancel: function() {
+            $( this ).dialog( "close" );
+            }
+          } });
+          
+          $( "#confirm" ).dialog('open');
+          
+        });
+        
+      }else{
+      $('#no_one').removeClass('hidden');
+      $('#more_candies').hide();
+      $('#candies_loading').hide();
+      }
+      
+    });
+  }
+  
+  $('#more_candies a').click(function(e){
+    get_candies();
+  });
+  
+  get_candies();
+  
+});
+</script>
+
+<% content_for :left_nav do %>
+<div class="nav_button">
+<% if params[:leaderboard].nil? %>
+<%= link_to "Back", :root %>
+<% else %>
+<%= link_to "Back", leaderboard_path %>
+<% end %>
+</div>
+<% end %>
+
+<h1><%= @title %></h1>
+
+
+<ul class="status_list">
+<% @candy_status_list.each do |status| %>
+<li<%= " class=rejected" if status[:name] == "Rejected" %>><%= status[:name] %><div class="fr"><strong><%= status[:count] %></strong></div></li>
+<% end %>
+</ul>
+
+
+<div id="user_candies">
+  <ul class="list">
+  </ul>
+  <div id="no_one" class="hidden">
+  No more candies.
+  </div>
+</div>
+
+<div id="candies_loading" class="loading"></div>
+<div class="preload" style="display:none">
+<div id="more_candies"><a href="#" class="nolink">Load More</a></div>
+<%= render '/windows/photo_popup' %>
+<%= render '/windows/confirm' %>
+<% render '/windows/candy_added' %>
+</div>

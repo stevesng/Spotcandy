@@ -1,0 +1,36 @@
+Hiya Scout!<br /><br />
+Welcome to Spotcandy and thank you for participating.<br />
+Now you've got an important job to do - find and recommend attractive candies. Yes, it's that easy :)<br />
+To find out more about the details, please <%= link_to "read our FAQ page", faq_path %>.
+That's it. Have fun candy spotting!
+<hr style="border-top:1px solid #ccc">
+<div align="center"><h3>Some of the candies spotted</h3></div>
+<hr style="border-top:1px solid #ccc">
+<table border="0" cellpadding="0" width="100%" align="center">
+<tr>
+<% @candies_1.each do |candy| %>
+<td width="25%" align="center" valign="top">
+<%= image_tag candy.get_pic('thumbnail'), :size => '75x75' %><br />
+<div style="margin-top:5px;">
+<a href="http://m.spotcandy.com/venue/<%= candy.venue_id %>/candies" title="Candy Spot" style="color:#E01B84;"><%= candy.venue.name %>,<br />
+<%= candy.venue.location['state'] %></a>
+</div>
+</td>
+<% end %>
+</tr>
+<tr>
+<% @candies_2.each do |candy| %>
+<td width="25%" align="center" valign="top">
+<%= image_tag candy.get_pic('thumbnail'), :size => '75x75' %><br />
+<div style="margin-top:5px;">
+<a href="http://m.spotcandy.com/venue/<%= candy.venue_id %>/candies" title="Candy Spot" style="color:#E01B84;"><%= candy.venue.name %>,<br />
+<%= candy.venue.location['state'] %></a>
+</div>
+</td>
+<% end %>
+</tr>
+</table>
+<br />
+<br />
+<br />
+<%= render 'signature' %>

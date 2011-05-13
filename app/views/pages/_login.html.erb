@@ -1,0 +1,11 @@
+<% if !current_user %>
+<div class="clear"></div>
+<div id="login" align="center" style="float:right; margin-right:22px;">
+<% if request.env['HTTP_HOST'] != 'spotcandy.com.localhost:3000' %>
+<div style="float:right; margin-top:8px;"><%= link_to "FAQ", faq_path %> | <%= link_to "Login", user_session_path %></div>
+<div style="margin-bottom:10px; margin-top:10px; display:inline-block; width:100px; float:right;">
+<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FSpotcandy%2F141205252611125&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
+</div>
+<% end %>
+</div>
+<% end %>

@@ -1,0 +1,41 @@
+<ul class="status_list">
+<% @candy_status_list.each do |status| %>
+<li><%= status[:name] %><div class="fr"><strong><%= status[:count] %></strong></div><li>
+<% end %>
+</ul>
+
+<div id="user_candies">
+  <ul class="list">
+  <% @candies.each do |candy| %>
+    <li>
+    <a name="<%= "candy_#{candy.id}" %>"></a>
+    <div class="spotted">
+      @<%= link_to candy.venue.name, {:controller => 'venues', :action => 'candies', :id => candy.venue.id} %>
+    </div>
+    <div class="clear"></div>
+    <div class="pic shadow fl">
+    <a href="<%= candy.pic %>" target="_blank"><%= image_tag candy[:thumbnail] ? candy[:thumbnail].photo.url(:thumb) : candy.data['photo'], :size => '75x75' %></a>
+    </div>
+
+    <div class="remove_candy fr">
+      <div class="text">
+        <div class="candy_status">
+          <%= candy.candy_status %> <span class="grey"><%= "+#{candy.score}" if candy.is_candy %></span>
+        </div>
+        <!--
+        <div class="score">
+          <div class="count"><%= candy.score %></div><%= candy.score == 1 ? "Recommendation" : "Recommendation".pluralize %>
+          
+        </div>
+        -->
+      <% if params[:id].nil? %>
+      <%= link_to "Remove", {:controller => 'users', :action => 'remove_candy', :id => candy.id}, :confirm => 'Confirm removing this candy?', :method => :delete  %>
+      <% end %>
+      
+      </div>
+    </div>
+    <div class="clear"></div>
+    </li>
+  <% end %>
+  </ul>
+</div>

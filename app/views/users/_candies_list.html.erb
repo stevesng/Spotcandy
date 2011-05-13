@@ -1,0 +1,47 @@
+<% if !@candies.nil? %>
+<%
+@candies.each do |candy| %>
+  <% if candy.venue %>
+      <li id="<%= "candy_#{candy.id}" %>">
+      <a name="<%= "candy_#{candy.id}" %>"></a>
+      <div class="spotted">
+        @<%= link_to candy.venue.name, {:controller => 'venues', :action => 'candies', :id => candy.venue.id, :offset => params[:offset]} %>
+      </div>
+      <div class="clear"></div>
+      <div class="pic s75 pic_loading shadow fl">
+      <%= link_to (image_tag candy.get_pic('thumbnail'), :size => '75x75'), 
+      {:controller => 'candies', :action => 'detail', :id => candy.id}, :target => '_blank', :class => 'nolink',
+      :href => candy.get_pic('original') %>
+      </div>
+
+      <%= link_to "", {:controller => 'candies', :action => 'update_profile', :id => candy.id, :format => 'json'}, 
+    :method => :post, :remote => true, :class => 'refresh_photo' %>
+
+      <div class="fr remove_candy">
+        <div class="text">
+          
+          <% if candy.users.first.id == current_user.id && candy.is_candy %>
+          <div class="discovered fr">
+          * Discovered by you
+          </div>
+          <div class="clear"></div>
+          <% end %>
+          
+          
+          <div class="candy_status<%= " rejected " if candy.candy_status == "Rejected" %>">
+            <span class="status"><%= candy.candy_status %></span>
+            <span class="grey">(<%= candy.score %>)</span>
+            <span class="candy_score"><%= "+#{candy.users.first.id == current_user.id ? candy.score : 1}" if candy.is_candy %></span>
+          </div>
+
+        <div class="fr">
+          <span class="remove"><%= link_to "Remove", {:controller => 'users', :action => 'remove_candy', :id => candy.id, :format => 'json'}, :class => 'remove_candy nolink' %>
+          </span>
+        </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+      </li>
+  <% end %>
+<% end %>
+<% end %>

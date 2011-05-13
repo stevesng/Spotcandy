@@ -1,0 +1,95 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+<head>
+  <title>Spotcandy - Mobile</title>
+  <meta name="google-site-verification" content="A7cI8zwVCytRq4Qnkv8O5z5u-nY22SPYFbYCX85KIPc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="The world's most attractive people.">
+  
+  <%= stylesheet_link_tag "themes/base/jquery.ui.all", "mobile/1140", "style" %>
+  <%= javascript_include_tag :defaults, "jquery-ui/js/jquery-ui-1.8.9.custom.min.js" %>
+  <%= csrf_meta_tag %>
+  <script>
+  $(function() {  
+    $('#info_icon a').toggle(function() {
+      $('body').addClass('about');
+      $('.home_view').hide();
+      $('.container').show();
+      $(this).children('img').attr('src', '/images/close.png');
+    }, function() {
+      $('body').removeClass('about');
+      $('.home_view').show();
+      $('.container').hide();
+      $(this).children('img').attr('src','/images/info.png');
+    });  });
+  </script>
+  <% if request.env['HTTP_HOST'] != 'spotcandy.com.localhost:3000' %>
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-3542483-12']);
+    _gaq.push(['_trackPageview']);
+ ]); 
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
+  <% end %>
+</head>
+<body style="padding-bottom:10px">
+<div id="header">
+  <div id="left_nav"><%= yield :left_nav %></div>
+  <div id="right_nav"><%= yield :right_nav %></div>
+  <div id="primary_links" style="float:none;">
+  <div align="center" id="logo">
+  <%= link_to (image_tag "logo_spotcandy.png"), root_url %>
+  <div id="info_icon" class="fr"><a href="#"><%= image_tag "info.png", :style => 'border:none' %></a></div></div>
+  
+  </div>
+  <div class="clear"></div>
+</div>
+
+<% if notice %>
+<div align="center" class="home_view">
+<p id="notice" style="width:80%"><%= notice %></p>
+<p>Meanwhile, you can check out our <br /><%= link_to "Facebook page", "http://www.facebook.com/pages/Spotcandy/141205252611125", :target => '_blank' %> or <br />
+<%= link_to "follow us on Twitter", 'http://twitter.com/getspotcandy', :target => '_blank' %>.<br />Otherwise you can <%= link_to "login", user_session_path %> again.</p>
+</div>
+
+<% else %>
+
+<div id="home_candy_stream" class="home_view">
+<%= yield %>
+</div>
+
+<% end %>
+
+<div class="container" style="display:none;">
+
+	<div class="row">
+		<div class="twelvecol">
+        <div align="center">
+          <br />
+          Welcome to Spotcandy - an ambitious project to identify the most attractive people(candies) in the world. <br />Get involved today.
+          <br />
+          <hr style="border-bottom:1px solid #F56EB6; border-top:1px solid #BF2879; border-width:1px 0 1px 0;">
+          <%= link_to "Become a Candy Scout", new_user_registration_path, :style => 'color:#fff;text-shadow: #000 2px 2px 0;' %>
+          <br />
+          or
+          <br />
+          <%= link_to "Login", user_session_path, :style => 'color:#fff;text-shadow: #000 2px 2px 0;' %><br />
+          if you already have an account.
+          </div>
+		</div>
+
+	</div>
+</div>
+
+
+</body>
+</html>

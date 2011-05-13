@@ -1,0 +1,167 @@
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script>
+
+$(document).ready(function(){
+  
+  $('#trending a').click(function(e){
+    e.preventDefault();
+    init_geolocation();
+    //get_trending_venues(25.08215908637985,121.56711101531982, 1);
+  });
+  
+  /*
+  $('#history a').click(function(e){
+    e.preventDefault();
+    $('#user_venues_list').hide();
+    get_user_venues(1);
+  });
+  */
+  
+  $('#history a')
+  .bind("ajax:beforeSend", function(xhr, settings){
+    $('#user_venues_list').hide();
+    $('#load_user').show();
+    $('#history').hide();
+    $('#load_user div').show();
+  })
+  .bind("ajax:success", function(event, data, status, xhr){
+    $('#user_venues_list').html(data);
+    $('#user_venues_list').show();
+    $('#load_user').hide();
+    $('#history').show();
+    $('#load_user div').hide();
+  });
+  
+  <% if @trending.nil? %>
+  init_geolocation();
+  <% else %>
+  get_trending_venues(0, 0, 0);
+  <% end %>
+  
+  /* Tab */
+  $('#venue_search_tabs a').click(function(e){
+    $('.tab_content').hide();
+    var tab_content = $(this).attr('href');
+    $('#tab_content_'+tab_content).fadeIn();
+    //alert($('#user_venues_list').html());
+    if(tab_content == 'favorites' & $('#user_venues_list').html() == ' '){
+      get_user_venues();
+    }
+  });
+  
+  get_popular_venues();
+  
+});
+
+function get_trending_venues(lat,lng, refresh){
+
+  
+  $('#load_trending').show();
+
+  $.get('/venues/trending', {lat:lat, lng:lng, refresh:refresh}, function(data) {
+    if(data){
+    $('#trending_venues_list').html(data);
+    $('#trending_venues_list').show();
+    $('#load_trending').hide();
+    }else{alert("error");}
+  });
+  
+}
+
+
+function get_user_venues(){
+  $('#load_user').show();
+  $('#history').hide();
+  $.get('/venues/history', {id:<%= current_user.id %>}, function(data) {
+    if(data){
+    $('#user_venues_list').html(data);
+    $('#user_venues_list').show();
+    $('#load_user').hide();
+    $('#history').show();
+    }else{alert("error");}
+  });
+}
+
+function get_popular_venues(){
+  $('#load_popular').show();
+  $.get('/venues/popular', function(data) {
+    if(data){
+    $('#popular_venues_list').html(data);
+    $('#popular_venues_list').show();
+    $('#load_popular').hide();
+    }else{alert("error");}
+  });
+}
+
+function init_geolocation(){
+  $('#load_trending').show();
+  $('#trending_venues_list').hide();
+  /*
+  var myOptions = {
+    zoom: 6,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+  var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+  */
+  // Try W3C Geolocation (Preferred)
+  if(navigator.geolocation) {
+    browserSupportFlag = true;
+    navigator.geolocation.getCurrentPosition(function(position) {
+    get_trending_venues(position.coords.latitude, position.coords.longitude, 1);
+    }, function() {
+      handleNoGeolocation(browserSupportFlag);
+    });
+  } else {
+    browserSupportFlag = false;
+    handleNoGeolocation(browserSupportFlag);
+  }
+  
+  function handleNoGeolocation(errorFlag) {
+    if (errorFlag == true) {
+      alert("Geolocation service failed.");
+      get_trending_venues(0, 0, 0);
+    } else {
+      alert("Your browser doesn't support geolocation.");
+      get_trending_venues(null, null, 0);
+    }
+    //map.setCenter(initialLocation);
+  }
+}
+
+//
+</script>
+<div id="venue_search_tabs">
+<div class="tab fl"><a href="trending" class="nolink">Nearby</a></div>
+<div class="tab fr"><a href="favorites" class="nolink">Favorites</a></div>
+<div class="clear"></div>
+</div>
+<div class="clear"></div>
+
+<div id="tab_content_trending" class="tab_content">
+  <div class="refresh" id="trending"><%= link_to "Refresh", request.env['PATH_INFO']+"?refresh=1" %></div>
+
+  <h2>Nearby Venues</h2>
+  <div id="load_trending" class="loading" style="display:none"></div>
+  <div id="trending_venues_list" class="venue_list">
+  </div>
+
+  <h2>Recent Scouting Spots</h2>
+  <div id="load_popular" class="loading" style="display:none"></div>
+  <div id="popular_venues_list" class="venue_list">
+  </div>
+</div>
+
+<div id="tab_content_favorites" class="tab_content">
+  <% if !current_user.authentications.empty? %>
+  <div class="refresh" id="history">
+  <% link_to "Import Checkins", {:controller => 'venues', :action => 'history', :id => current_user.id, :refresh => 1},
+  :method => 'get', :remote => true, :confirm => 'Import checkins from Foursquare?' %>
+  </div>
+  <% end %>
+
+  <h2>Favorites</h2>
+  <div id="load_user" class="loading" style="display:none"></div>
+  <div id="user_venues_list" class="venue_list"> </div>
+</div>
+
+

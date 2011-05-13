@@ -1,0 +1,16 @@
+<% content_for :left_nav do %>
+  <%= link_to "Back", {:controller => 'venues', :action => 'candies',  :id => params[:venue_id], :anchor => "candy_#{@candy.id}"} %>
+<% end %>
+
+<% content_for :body_class do %>
+  style="background:#E01B84;"
+<% end %>
+
+<div id="candy_added">
+  <div align="center">
+  <div class="pic"><%= image_tag @candy['data']['photo'], :size => '100x100' %></div>
+  </div>
+  
+  <div id="candy_message"><%= @message %></div>
+  <div id="candy_caption"><%= @caption %></div>
+</div>

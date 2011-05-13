@@ -1,0 +1,17 @@
+<% content_for :right_nav do %>
+<div class="nav_button"><%= link_to "Settings", edit_user_registration_path %></div>
+<% end %>
+
+<h1>User Profile</h1>
+<% if @foursquare %>
+<h4>Foursquare Profile</h4>
+<%= image_tag @foursquare['data']['photo'], :size => "50x50" %>
+<div class="field">
+<span class="label">Name</span> <%= "#{@foursquare['data']['firstName']} #{@foursquare['data']['lastName']}" %>
+</div>
+<div class="field">
+<span class="label">Friends</span> <%= "#{@foursquare['data']['friends']['count']}" %>
+</div>
+<% else %>
+<%= link_to "Link with Foursquare", '/auth/foursquare' %>
+<% end %>

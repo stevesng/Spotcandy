@@ -1,0 +1,14 @@
+development:
+  bucket: spotcandydev
+  access_key_id: AKIAIFHH2BKP37HXI7WQ
+  secret_access_key: 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
+
+test:
+  bucket: spotcandytest
+  access_key_id: AKIAIFHH2BKP37HXI7WQ
+  secret_access_key: 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
+
+production:
+  bucket: spotcandy
+  access_key_id: AKIAIFHH2BKP37HXI7WQ
+  secret_access_key: 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

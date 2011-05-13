@@ -1,0 +1,30 @@
+<h1>Listing candies</h1>
+
+<%= link_to 'New Candy', new_candy_path %>
+<br />
+
+<table>
+  <tr>
+    <th>Pid</th>
+    <th>Is Candy</th>
+    <th>Rejected</th>
+    <th>Flag Status</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @candies.each do |candy| %>
+  <tr>
+    <td><%= candy.pid %></td>
+    <td><%= candy.is_candy %></td>
+    <td><%= candy.rejected %></td>
+    <td><%= candy.flag_status %></td>
+    <td><%= link_to 'Show', candy %></td>
+    <td><%= link_to 'Edit', edit_candy_path(candy) %></td>
+    <td><%= link_to 'Destroy', candy, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+

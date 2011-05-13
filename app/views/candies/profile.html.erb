@@ -1,0 +1,17 @@
+<div align="center">
+<% if @candy %>
+<br />
+<div class="pic s110 pic_loading"><%= image_tag @candy.get_pic('thumbnail') %></div>
+<br />
+<h1>Congratulations!</h1>
+You are a candy and is recommended by <%= pluralize(@candy.users.count, 'user') %>!<br />
+<u><%= link_to "Check out your privileges", candies_privileges_path %></u>.
+<% else %>
+<h1>Oops! You are not a candy yet!</h1>
+<br />
+<p>Get spotted by checking in to<br />
+<%= link_to (image_tag 'foursquare-logo.png'), 'http://foursquare.com', :target => '_blank' %></p> 
+<% end %>
+<br /><br />
+<% link_to "Vote for Candy Of The Month", contest_path %>
+</div>

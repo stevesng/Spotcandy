@@ -1,0 +1,18 @@
+<%= image_tag @candy.pic, :class => 'original' %>
+<% if @candy.photos.count > 1 %>
+<script>
+$(function() {
+  $('#candy_photos li img').click(function(e){
+    var thumb = $(this).attr('src');
+    var original = thumb.replace("thumb", "original");
+    $('img.original').attr('src', original);
+  });
+});
+</script>
+<hr>
+<ul id="candy_photos">
+<% @candy.photos.each do |photo| %>
+<li><%= image_tag photo.photo.url(:thumb) %></li>
+<% end %>
+</ul>
+<% end %>

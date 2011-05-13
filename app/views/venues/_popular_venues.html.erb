@@ -1,0 +1,12 @@
+<ul class="list">
+<% @popular_venues.each do |v| %>
+<li<%= " class='locked'" if v.locked.to_i > 0 %>>
+<div class="venue_name">
+<a href="/venue/<%= v.id %>/candies"><%= '*' if v.locked.to_i > 0 %><%= "#{v.name}" %></a>
+<%= " (#{v.people_count})" %>
+</div>
+<div class="fr"><%= "#{v.state.capitalize}" %></div>
+<div class="clear"></div>
+</li>
+<% end %>
+</ul>

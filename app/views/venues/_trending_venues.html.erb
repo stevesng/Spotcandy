@@ -1,0 +1,19 @@
+<% if session[:trending].empty? %>
+No venues trending now.
+<% else %>
+<ul class="list">
+<% session[:trending].each do |v|
+venue = Venue.find(v)
+%>
+<li<%= " class='locked'" if venue.locked.to_i > 0 %>>
+<div class="venue_name">
+<a href="/venue/<%= venue.id %>/candies"><%= '*' if venue.locked.to_i > 0 %><%= "#{venue.name}" %></a>
+<%= " (#{venue.people_count})" if venue.people_count.to_i > 0 %>
+</div>
+
+<div class="distance fr"><%= "#{venue.location['distance']} metres" %></div>
+<div class="clear"></div>
+</li>
+<% end %>
+</ul>
+<% end %>

@@ -1,0 +1,7 @@
+<div id="venue_locked" align="center">
+<%= image_tag 'locked.png' %>
+<br />
+<span style="color:#E01B84;">This venue is locked.</span><br />
+You need <strong><%= @score_needed %></strong> more points to access this venue.<br />
+You currently have <strong><%= "#{@user_score}" %></strong> <%= @user_score > 0 ? "points" : "point" %>.
+</div>

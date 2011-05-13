@@ -1,0 +1,39 @@
+Hi Scout,
+<br /><br />
+Here are some of your candies who have been recommended by other scouts today.
+<hr style="border-top:1px solid #ccc">
+<div align="center">
+<table align="center">
+<% @list.each do |candies| %>
+  <tr>
+  <% candies.each do |c| %>
+  <% if !c.nil? %>
+  <td align="center">
+  <a href="http://m.spotcandy.com/venue/<%= c.venue_id %>/candies" target="_blank"><%= image_tag c.thumbnail, 
+  :size => '75x75', :style => 'border:1px solid #f1f1f1' %></a><br />
+  <%= c.candy_status %>
+  </td>
+  <% end %>
+  <% end %>
+  </tr>
+<% end %>
+</table>
+
+<hr style="border-top:1px solid #ccc">
+<h3>Candies Spotted Recently</h3>
+<hr style="border-top:1px solid #ccc">
+<table border="0" cellpadding="0" width="100%" align="center">
+<tr>
+<% @candies.each do |candy| %>
+<td width="25%" align="center" valign="top">
+<%= image_tag candy.thumbnail, :size => '75x75' %><br />
+<div style="margin-top:5px;">
+<a href="http://m.spotcandy.com/venue/<%= candy.venue_id %>/candies" title="Candy Spot" style="color:#E01B84;"><%= candy.venue.name %>,<br />
+<%= candy.venue.location['state'] %></a>
+</div>
+</td>
+<% end %>
+</tr>
+</table>
+
+</div>

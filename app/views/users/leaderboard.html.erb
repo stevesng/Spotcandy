@@ -1,0 +1,29 @@
+<h1 class="fl" style="float:left;">Leaderboard</h1>
+<div id="user_rank"> - Rank: <span><%= @user_rank || 'None' %></span></div>
+<div class="clear"></div>
+<table id="leaderboard" cellspacing="0" align="left">
+<thead>
+  <tr>
+  <th>Rank</th>
+  <th colspan="4">Details</th>
+  </tr>
+</thead>
+<% 
+for i in 0...@scout_list.length
+scout = @scouts[@scout_list[i][0]]
+%>
+<tr<%= ' class=you' if scout[:id] == current_user.id %>>
+<td valign="top"><strong><%= i+1 %></strong></td>
+<td valign="middle"><div class="scout"><%= image_tag "scout.png", :size => '50x50' %></div></td>
+<td>
+  <div class="specs">
+    <div class="score"><div class="value"><%= scout[:score] %></div><div class="label">Score: </div></div>
+    <!-- <div class="candy_count "><div class="label">Candies: </div><div class="value"><%= scout[:candy_count] %></div></div> -->
+  </div>
+</td>
+<td align="center">
+<div class="view"><%= link_to "View Portfolio", {:controller => 'users', :action => 'candies', :id => scout[:id], :leaderboard => 1} %></div>
+</td>
+</tr>
+<% end %>
+</table>

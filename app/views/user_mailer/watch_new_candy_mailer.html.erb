@@ -1,0 +1,20 @@
+<div align="center">
+  <br />
+  <font style="font-family:Georgia; font-size:16px; line-height: 24px;">
+    A new candy was discovered @<br />
+    <a href="http://m.spotcandy.com/venue/<%= @candy.venue_id %>/candies" style="font-size:14px; color:#E01B84; text-decoration:none;">
+    <strong><%= @candy.venue.name %>, <%= @candy.venue.location['state'] %></strong></a><br /><%= "#{time_ago_in_words(@candy.created_at)} ago." %> 
+    <br /><br />
+    <div style="padding:5px; border:1px solid #ccc; display:block; width:110px; height:110px;">
+    <a href="http://m.spotcandy.com/venue/<%= @candy.venue_id %>/candies">
+    <%= image_tag @candy.get_pic('thumbnail'), :alt => "Candy Photo", :style => 'border:none' %>
+    </a>
+    </div>
+  </font>
+  <br />
+  <%= render 'candies_spotted' %>
+  <hr>
+  <p style="color:#666;">
+  <span style="font-size:smaller;">You are receiving this email because you are watching this venue. <br />If you wish to unwatch, please <a href="http://m.spotcandy.com/venue/<%= @candy.venue_id %>/candies" style="color:#666; text-decoration:none;"><u>click here</u></a>.</span>
+  </p>
+</div>

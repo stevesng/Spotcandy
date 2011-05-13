@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /
+Allow: /faq
+Allow: /pages/home
+

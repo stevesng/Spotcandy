@@ -1,0 +1,14 @@
+<div align="center">
+A scout has recommended this candy in your portfolio! <br />
+She's now a <strong style="color:#E01B84;"><%= @candy.candy_status %></strong> with 
+<strong style="color:#E01B84;"><%= @recommendations %></strong> <%= @recommendations.to_i > 1 ? 'recommendations' : 'recommendation' %>!
+<br /><br />
+<a href="http://m.spotcandy.com/venue/<%= @candy.venue_id %>/candies"><%= image_tag @candy.get_pic('thumbnail'), :alt => "Candy Photo", :style => 'border:none' %></a>
+<br /><br />
+<%= render 'candies_spotted' %>
+</div>
+
+<br />
+<br />
+<br />
+<%= render 'signature' %>

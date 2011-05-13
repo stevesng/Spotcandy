@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8"/>
+	<title>The 1140px Grid &middot; Fluid down to mobile</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+	<!-- The 1140px Grid -->
+	<link rel="stylesheet" href="/stylesheets/mobile/1140.css" type="text/css" media="screen" />
+	
+	<!--[if lte IE 9]>
+	<link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" />
+	<![endif]-->
+	
+
+
+</head>
+
+
+<body>
+
+<div class="container">
+	<div class="row">
+		<div class="twelvecol">
+			<p>Is a full width div that allows layouts to have a background that spans the full width of the browser. It also contains 20px padding on either side to keep content away from the edges when it becomes fluid. You can just use one big container, or use multiple to break the page horizontally.</p>
+		</div>
+
+	</div>
+</div>
+
+
+</body>
+
+</html>

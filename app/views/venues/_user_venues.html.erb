@@ -1,0 +1,27 @@
+<% if !@user_venues.empty? %>
+<ul class="list">
+<% @user_venues.each do |v| %>
+<li class="venuetype_<%= v.venuetype %><%= ' locked' if v.locked.to_i > 0 %>">
+<div class="venue_name">
+<a href="/venue/<%= v.id %>/candies"><%= '*' if v.locked.to_i > 0 %><%= "#{v.name}" %></a>
+<% if v.people_count.to_i > 0 %>
+<%= " (#{v.people_count})" %>
+<% end %>
+</div>
+<div class="here fr">
+<% if v.venuetype == 1 %>
+  <% if v.watched %>
+  <% "#{time_ago_in_words(v.created_at)} ago." %>
+  <%= image_tag "eye.png" %>
+  <% end %>
+<% else %>
+<%= image_tag 'fav_venue.png' %>
+<% end %>
+</div>
+<div class="clear"></div>
+</li>
+<% end %>
+</ul>
+<% else %>
+It's empty!<br />
+<% end %>
