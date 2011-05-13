@@ -112,3 +112,115 @@ Completed   in 168ms
 Rendered users/shared/_links.erb (1.4ms)
 Rendered users/sessions/new.html.erb within layouts/mobile (9.7ms)
 Completed 200 OK in 97ms (Views: 15.7ms | ActiveRecord: 52.6ms)
+  [1m[36mSQL (0.8ms)[0m  [1mSHOW TABLES[0m
+  [1m[35mSQL (1.3ms)[0m  SHOW TABLES
+  [1m[36mSQL (1.8ms)[0m  [1mSELECT `schema_migrations`.`version` FROM `schema_migrations`[0m
+Migrating to DeviseCreateUsers (20110128105148)
+Migrating to CreateVenues (20110128110136)
+Migrating to CreateAuthentications (20110128121054)
+Migrating to AddNameToVenues (20110128132341)
+Migrating to AddPeopleToVenues (20110128140129)
+Migrating to CreateCandies (20110128151537)
+Migrating to CreateCandiesVenues (20110128171401)
+Migrating to RemoveVenueIdFromCandies (20110128171644)
+Migrating to AddScoreToCandies (20110128185736)
+Migrating to CreateCandiesUsers (20110130181112)
+Migrating to AddFlagToCandies (20110130181735)
+Migrating to AddVenueTypeToUsersVenues (20110131011555)
+Migrating to AddGeoToUsersVenues (20110131012035)
+Migrating to DeviseCreateAdmins (20110131152456)
+Migrating to RemoveVenueIdFromCandiesUsers (20110201052359)
+Migrating to AddConfirmationToUsers (20110202013812)
+Migrating to CreatePhotos (20110210113714)
+Migrating to AddPhotoRemoteUrlToPhotos (20110211053739)
+Migrating to AddVenueIdToCandies (20110211154828)
+Migrating to AddIsCandyToCandies (20110211165418)
+Migrating to AddRejectedToCandies (20110213182228)
+Migrating to AddFlagStatusToCandies (20110215053825)
+Migrating to RemoveFlagFromCandies (20110215071149)
+Migrating to AddDefaultPhotoToCandies (20110219191643)
+Migrating to CreateRecommendations (20110221151510)
+Migrating to AddVenueTypeToUsersVenue (20110301161908)
+Migrating to RemoveVenueTypeFromUsersVenue (20110301171549)
+Migrating to RemoveCoordFromUsersVenue (20110302153739)
+Migrating to AddLockedCandyCountToVenues (20110317041823)
+Migrating to AddLimitToUsers (20110318041615)
+Migrating to AddCandyNotificationToUsers (20110318073847)
+Migrating to AddGenderToUsers (20110407084519)
+Migrating to CreateVariables (20110409161806)
+Migrating to AddFacebookPostToCandies (20110409171408)
+Migrating to RemovePasswordSaltFromUsers (20110513060625)
+  [1m[35mSQL (53.2ms)[0m  ALTER TABLE `users` DROP `password_salt`
+Mysql2::Error: Can't DROP 'password_salt'; check that column/key exists: ALTER TABLE `users` DROP `password_salt`
+  [1m[36mSQL (1.2ms)[0m  [1mSHOW TABLES[0m
+  [1m[35mSQL (1.0ms)[0m  SHOW TABLES
+  [1m[36mSQL (49.0ms)[0m  [1mSELECT `schema_migrations`.`version` FROM `schema_migrations`[0m
+Migrating to DeviseCreateUsers (20110128105148)
+Migrating to CreateVenues (20110128110136)
+Migrating to CreateAuthentications (20110128121054)
+Migrating to AddNameToVenues (20110128132341)
+Migrating to AddPeopleToVenues (20110128140129)
+Migrating to CreateCandies (20110128151537)
+Migrating to CreateCandiesVenues (20110128171401)
+Migrating to RemoveVenueIdFromCandies (20110128171644)
+Migrating to AddScoreToCandies (20110128185736)
+Migrating to CreateCandiesUsers (20110130181112)
+Migrating to AddFlagToCandies (20110130181735)
+Migrating to AddVenueTypeToUsersVenues (20110131011555)
+Migrating to AddGeoToUsersVenues (20110131012035)
+Migrating to DeviseCreateAdmins (20110131152456)
+Migrating to RemoveVenueIdFromCandiesUsers (20110201052359)
+Migrating to AddConfirmationToUsers (20110202013812)
+Migrating to CreatePhotos (20110210113714)
+Migrating to AddPhotoRemoteUrlToPhotos (20110211053739)
+Migrating to AddVenueIdToCandies (20110211154828)
+Migrating to AddIsCandyToCandies (20110211165418)
+Migrating to AddRejectedToCandies (20110213182228)
+Migrating to AddFlagStatusToCandies (20110215053825)
+Migrating to RemoveFlagFromCandies (20110215071149)
+Migrating to AddDefaultPhotoToCandies (20110219191643)
+Migrating to CreateRecommendations (20110221151510)
+Migrating to AddVenueTypeToUsersVenue (20110301161908)
+Migrating to RemoveVenueTypeFromUsersVenue (20110301171549)
+Migrating to RemoveCoordFromUsersVenue (20110302153739)
+Migrating to AddLockedCandyCountToVenues (20110317041823)
+Migrating to AddLimitToUsers (20110318041615)
+Migrating to AddCandyNotificationToUsers (20110318073847)
+Migrating to AddGenderToUsers (20110407084519)
+Migrating to CreateVariables (20110409161806)
+Migrating to AddFacebookPostToCandies (20110409171408)
+Migrating to RemovePasswordSaltFromUsers (20110513060625)
+  [1m[35mSQL (93.9ms)[0m  ALTER TABLE `users` DROP `password_salt`
+  [1m[36mSQL (2.0ms)[0m  [1mdescribe `schema_migrations`[0m
+  [1m[35mSQL (1.6ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20110513060625')
+  [1m[36mSQL (1.0ms)[0m  [1mSHOW TABLES[0m
+  [1m[35mSQL (0.9ms)[0m  SELECT `schema_migrations`.`version` FROM `schema_migrations`
+  [1m[36mSQL (0.5ms)[0m  [1mSHOW TABLES[0m
+  [1m[35mSQL (3.1ms)[0m  describe `admins`
+  [1m[36mSQL (0.9ms)[0m  [1mSHOW KEYS FROM `admins`[0m
+  [1m[35mSQL (2.3ms)[0m  describe `authentications`
+  [1m[36mSQL (1.1ms)[0m  [1mSHOW KEYS FROM `authentications`[0m
+  [1m[35mSQL (2.3ms)[0m  describe `candies`
+  [1m[36mSQL (1.1ms)[0m  [1mSHOW KEYS FROM `candies`[0m
+  [1m[35mSQL (3.9ms)[0m  describe `candies_users`
+  [1m[36mSQL (1.0ms)[0m  [1mSHOW KEYS FROM `candies_users`[0m
+  [1m[35mSQL (2.2ms)[0m  describe `candies_venues`
+  [1m[36mSQL (1.1ms)[0m  [1mSHOW KEYS FROM `candies_venues`[0m
+  [1m[35mSQL (2.5ms)[0m  describe `favorites`
+  [1m[36mSQL (0.9ms)[0m  [1mSHOW KEYS FROM `favorites`[0m
+  [1m[35mSQL (2.7ms)[0m  describe `photos`
+  [1m[36mSQL (1.3ms)[0m  [1mSHOW KEYS FROM `photos`[0m
+  [1m[35mSQL (7.3ms)[0m  describe `recommendations`
+  [1m[36mSQL (1.2ms)[0m  [1mSHOW KEYS FROM `recommendations`[0m
+  [1m[35mSQL (2.1ms)[0m  describe `sessions`
+  [1m[36mSQL (1.0ms)[0m  [1mSHOW KEYS FROM `sessions`[0m
+  [1m[35mSQL (2.1ms)[0m  describe `temps`
+  [1m[36mSQL (4.2ms)[0m  [1mSHOW KEYS FROM `temps`[0m
+  [1m[35mSQL (3.3ms)[0m  describe `users`
+  [1m[36mSQL (1.4ms)[0m  [1mSHOW KEYS FROM `users`[0m
+  [1m[35mSQL (2.1ms)[0m  describe `users_venues`
+  [1m[36mSQL (1.0ms)[0m  [1mSHOW KEYS FROM `users_venues`[0m
+  [1m[35mSQL (2.2ms)[0m  describe `variables`
+  [1m[36mSQL (1.0ms)[0m  [1mSHOW KEYS FROM `variables`[0m
+  [1m[35mSQL (4.0ms)[0m  describe `venues`
+  [1m[36mSQL (1.5ms)[0m  [1mSHOW KEYS FROM `venues`[0m

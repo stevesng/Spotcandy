@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110409171408) do
+ActiveRecord::Schema.define(:version => 20110513060625) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                                              :null => false
@@ -114,7 +114,6 @@ ActiveRecord::Schema.define(:version => 20110409171408) do
   create_table "users", :force => true do |t|
     t.string   "email",                                                  :null => false
     t.string   "encrypted_password",   :limit => 128,                    :null => false
-    t.string   "password_salt",                                          :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
