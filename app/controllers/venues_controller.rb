@@ -90,11 +90,14 @@ class VenuesController < ApplicationController
     
     
     if !@limit_reached && (@diff >= 30 || params[:refresh].to_i == 1 || @venue.candies.where("flag_status = 0").empty?)
+
+      authentication = Authentication.where(:provider => 'foursquare', :user_id => current_user.id).first
+
       foursquare_obj = JSON.parse(Authentication.req('foursquare').request(
       :get, "https://api.foursquare.com/v2/multi?requests=/venues/#{@venue.foursquare_id},/venues/#{@venue.foursquare_id}/herenow",
       :client_id => @@auth[:key],
       :client_secret => @@auth[:secret],
-      :oauth_token => session[:oauth]['foursquare']))
+      :oauth_token => authentication.access_token))
       
       candies = foursquare_obj['response']['responses'][1]['response']['hereNow']['items']
       
@@ -174,13 +177,15 @@ class VenuesController < ApplicationController
     
     @limit_reached = current_user.jump_limit > 0 ? false : true
     
-    lat = params[:lat] != '0' ? params[:lat] : 1.3047282647
-    lng = params[:lng] != '0' ? params[:lng] : 103.8318729401
+    lat = (params[:lat] and params[:lat] != '0') ? params[:lat] : 1.3047282647
+    lng = (params[:lng] and params[:lng]!= '0') ? params[:lng] : 103.8318729401
     
     #@trending_venues = current_user.favorites.where("venuetype = ?", @trending_value).order("updated_at DESC").limit(5)
 
-    if session[:oauth]['foursquare'] && ( !@limit_reached && (params[:refresh].to_i == 1 || session[:trending].nil?) )
-    
+    if !@limit_reached and (params[:refresh].to_i == 1 || session[:trending].nil?)
+
+      authentication = Authentication.where(:provider => 'foursquare', :user_id => current_user.id).first
+
       # Clear all user's trending venues
       #UsersVenue.delete_all(:user_id => current_user.id, :venue_type => 'trending')
       #UsersVenue.delete_all(["user_id = ? AND venuetype = ?", current_user.id, @trending_value])
@@ -194,7 +199,7 @@ class VenuesController < ApplicationController
       :radius => 3000,
       :client_id => @@auth[:key],
       :client_secret => @@auth[:secret],
-      :oauth_token => session[:oauth]['foursquare']))
+      :oauth_token => authentication.access_token))
       #@venues = auth
       
       @foursquare_trending_venues = @foursquare_venues['response']['venues']
@@ -205,7 +210,7 @@ class VenuesController < ApplicationController
         
     respond_to do |format|
       format.html {render 'trending', :layout => false}
-      format.json  { render :json => session[:trending]}
+      format.json  { render :json => @foursquare_trending_venues }
     end
   end
   
@@ -311,6 +316,7 @@ class VenuesController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @venue }
+      format.json { render :json => @venue }
     end
 
   end

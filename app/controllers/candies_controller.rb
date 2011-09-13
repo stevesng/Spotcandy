@@ -49,9 +49,11 @@ class CandiesController < ApplicationController
     if params[:type].nil?
       @candies = Candy.where("is_candy = true").order("RANDOM()").limit(15)
     end
-    
-    
-    render :layout => false
+
+    respond_to do |format|
+      format.html { render :layout => false }
+      format.json  { render :json => @candies }
+    end
   end
   
   def detail
@@ -167,6 +169,7 @@ class CandiesController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @candy }
+      format.json  { render :json => @candy }
     end
   end
 
