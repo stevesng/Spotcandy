@@ -9,10 +9,7 @@ class AuthenticationsController < ApplicationController
     
     provider = params[:provider]
     
-    #oauth_url = request.env['HTTP_HOST'] == 'spotcandy.com.localhost:3000' ? 'spotcandylocal.com' : @remote_host_url
-    oauth_url = '127.0.0.1:3000'
-    #options = {:redirect_uri => "http://#{oauth_url}/auth/#{provider}/callback"}
-    options = {:redirect_uri => "http://#{oauth_url}/#{provider}/connect"}
+    options = {:redirect_uri => "#{root_url}#{provider}/connect" }
     options[:scope] = 'email,publish_stream,read_stream,user_photos,user_checkins,friends_checkins,manage_pages' if provider == 'facebook'
     
     redirect_to Authentication.req(provider).web_server.authorize_url(options)
@@ -24,10 +21,8 @@ class AuthenticationsController < ApplicationController
       render :text => params[:error]
     else
       if params[:code]
-        #oauth_url = request.env['HTTP_HOST'] == 'spotcandy.com.localhost:3000' ? 'spotcandylocal.com' : @remote_host_url
-        oauth_url = '127.0.0.1:3000'
         access_token = Authentication.req('foursquare').web_server.get_access_token(
-          params[:code], :redirect_uri => "http://#{oauth_url}/foursquare/connect"
+          params[:code], :redirect_uri => "#{root_url}foursquare/connect"
         )
 
         user = JSON.parse(Authentication.req('foursquare').request(:get, "https://api.foursquare.com/v2/users/self",
@@ -76,10 +71,8 @@ class AuthenticationsController < ApplicationController
     else
       #@client = Authentication.authenticate
       provider = params[:provider]
-      #oauth_url = request.env['HTTP_HOST'] == 'spotcandy.com.localhost:3000' ? 'spotcandylocal.com' : @remote_host_url
-      oauth_url = '127.0.0.1:3000'
       access_token = Authentication.req(provider).web_server.get_access_token(
-        params[:code], :redirect_uri => "http://#{oauth_url}/auth/#{provider}/callback"
+        params[:code], :redirect_uri => "#{root_url}auth/#{provider}/callback"
       )
       
       case provider
