@@ -150,7 +150,7 @@ class CandiesController < ApplicationController
   # GET /candies/1
   # GET /candies/1.xml
   def show
-    authenticate_admin!
+    #authenticate_admin!
     #require 'open-uri'
     
     @candy = Candy.find(params[:id])

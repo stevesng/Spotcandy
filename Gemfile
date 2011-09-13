@@ -1,18 +1,14 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.1'
-
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-gem 'mysql2'
-# gem 'jquery-rails', '>= 0.2.6'
+gem 'json'
+gem 'rake', '0.8.7' #latest rake 0.92 breaks rails
+gem 'rails', '3.0.9'
+gem 'pg', '0.9.0'
 
 gem 'oauth2', :path => 'vendor/oauth2-0.1.1'
 gem 'devise', '1.3.1'
 gem 'aws-s3'
 gem 'paperclip'
-
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -36,14 +32,14 @@ gem 'paperclip'
 #   gem 'webrat'
 # end
 
-group :development do
-  gem 'rspec-rails', '2.0.1'
-  gem 'annotate-models', '1.0.4'
-  gem 'json'
-end
-
-group :test do
-  gem 'rspec-rails', '2.0.1'
-  gem 'annotate-models', '1.0.4'
-  gem 'json'
-end
+#group :development do
+#  gem 'rspec-rails', '2.0.1'
+#  gem 'annotate-models', '1.0.4'
+#  gem 'json'
+#end
+#
+#group :test do
+#  gem 'rspec-rails', '2.0.1'
+#  gem 'annotate-models', '1.0.4'
+#  gem 'json'
+#end

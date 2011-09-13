@@ -14,8 +14,8 @@ class Authentication < ActiveRecord::Base
 #  FACEBOOK_SECRET = '41162a490cc3854a82bb90d2bddd0634'
   
 #  Local
-  @@foursquare_key = "5EHFSEXJME4NXODMVAOIVWVBDATOORPTO2CUFYHECZNBGJGM"
-  @@foursquare_secret = "5DGGVNA14JSCGF0XIYCFTLFM1ASFYDZYAYZCFIKKVIITIIV4"
+  @@foursquare_key = "1AOKUNHTUH42XVUTSLHOEKOD0VPZJCXTUUQQOKXDDRP0F15C"
+  @@foursquare_secret = "TQS2TJL3SJPOWV1SK3FF0R5WSE2LM5J1U3BPYCTAT4MFYVJU"
   
 #  def self.authenticate(provider)
 #    

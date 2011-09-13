@@ -10,16 +10,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110513060625) do
+ActiveRecord::Schema.define(:version => 20110913042843) do
 
   create_table "admins", :force => true do |t|
-    t.string   "email",                                              :null => false
-    t.string   "encrypted_password",   :limit => 128,                :null => false
-    t.string   "password_salt",                                      :null => false
+    t.string   "email",                                 :default => "", :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
     t.string   "reset_password_token"
-    t.string   "remember_token"
+    t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                       :default => 0
+    t.integer  "sign_in_count",                         :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -70,10 +69,10 @@ ActiveRecord::Schema.define(:version => 20110513060625) do
   end
 
   create_table "favorites", :force => true do |t|
+    t.integer  "venuetype"
+    t.boolean  "watched"
     t.integer  "user_id"
     t.integer  "venue_id"
-    t.integer  "venuetype"
-    t.boolean  "watched",    :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -107,17 +106,13 @@ ActiveRecord::Schema.define(:version => 20110513060625) do
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
-  create_table "temps", :id => false, :force => true do |t|
-    t.string "email"
-  end
-
   create_table "users", :force => true do |t|
-    t.string   "email",                                                  :null => false
-    t.string   "encrypted_password",   :limit => 128,                    :null => false
+    t.string   "email",                                 :default => "",    :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
     t.string   "reset_password_token"
-    t.string   "remember_token"
+    t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                       :default => 0
+    t.integer  "sign_in_count",                         :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -127,9 +122,9 @@ ActiveRecord::Schema.define(:version => 20110513060625) do
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.boolean  "notify_candy",                        :default => true,  :null => false
-    t.boolean  "verified",                            :default => false, :null => false
-    t.integer  "jump_limit",                          :default => 100,   :null => false
+    t.boolean  "verified",                              :default => false, :null => false
+    t.integer  "jump_limit",                            :default => 100,   :null => false
+    t.boolean  "notify_candy",                          :default => true,  :null => false
     t.string   "gender"
   end
 
@@ -137,8 +132,8 @@ ActiveRecord::Schema.define(:version => 20110513060625) do
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "users_venues", :id => false, :force => true do |t|
-    t.integer  "user_id"
     t.integer  "venue_id"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "venuetype"

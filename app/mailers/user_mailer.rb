@@ -8,7 +8,8 @@ class UserMailer < ActionMailer::Base
     
     mail(:to => recipient,
      :subject => "Welcome to Spotcandy") do |format|
-    format.html { render 'welcome_mailer' }
+     #this is buggy
+    #format.html { render 'welcome_mailer' }
     end
   end
   
