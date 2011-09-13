@@ -21,6 +21,7 @@ Spotcandy::Application.routes.draw do
   match 'auth/:provider' => 'authentications#index', :constraints => {:provider => /foursquare|facebook/}
   #match 'auth/:provider' => 'authentications#index', :constraints => {:provider => /foursquare/}
   match 'auth/:provider/callback', :to => 'authentications#callback'
+  match 'foursquare/connect' => 'authentications#connect'
   match 'search_candies' => "venues#search"
   match 'venue/:id/candies' => "venues#candies"
   match 'venue/people' => "venues#people"

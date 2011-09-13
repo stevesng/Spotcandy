@@ -58,7 +58,7 @@
 <div align="center" class="home_view">
 <p id="notice" style="width:80%"><%= notice %></p>
 <p>Meanwhile, you can check out our <br /><%= link_to "Facebook page", "http://www.facebook.com/pages/Spotcandy/141205252611125", :target => '_blank' %> or <br />
-<%= link_to "follow us on Twitter", 'http://twitter.com/getspotcandy', :target => '_blank' %>.<br />Otherwise you can <%= link_to "login", user_session_path %> again.</p>
+<%= link_to "follow us on Twitter", 'http://twitter.com/getspotcandy', :target => '_blank' %>.<br />Otherwise you can <%= link_to "login", '/auth/foursquare' %> again.</p>
 </div>
 
 <% else %>
@@ -78,7 +78,7 @@
           Welcome to Spotcandy - an ambitious project to identify the most attractive people(candies) in the world. <br />Get involved today.
           <br />
           <hr style="border-bottom:1px solid #F56EB6; border-top:1px solid #BF2879; border-width:1px 0 1px 0;">
-          <%= link_to "Become a Candy Scout", new_user_registration_path, :style => 'color:#fff;text-shadow: #000 2px 2px 0;' %>
+          <%# link_to "Become a Candy Scout", new_user_registration_path, :style => 'color:#fff;text-shadow: #000 2px 2px 0;' %>
           <br />
           or
           <br />

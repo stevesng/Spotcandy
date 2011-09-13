@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110913042843) do
+ActiveRecord::Schema.define(:version => 20110913114157) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -126,8 +126,10 @@ ActiveRecord::Schema.define(:version => 20110913042843) do
     t.integer  "jump_limit",                            :default => 100,   :null => false
     t.boolean  "notify_candy",                          :default => true,  :null => false
     t.string   "gender"
+    t.string   "authentication_token"
   end
 
+  add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 

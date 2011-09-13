@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
-  devise :database_authenticatable, :registerable, :rememberable, :trackable, :validatable, :recoverable
+  #devise :database_authenticatable, :registerable, :rememberable, :trackable, :validatable, :recoverable
+  devise :trackable, :token_authenticatable
 
   # Setup accessible (or protected) attributes for your model
   #attr_accessible :email, :password, :password_confirmation, :remember_me
@@ -14,6 +15,8 @@ class User < ActiveRecord::Base
   has_many :venues, :through => :favorites
   #has_and_belongs_to_many :venues
   
+  before_save :ensure_authentication_token
+
   def apply_auth(auth)
     self.email = auth[:email] if email.blank?
     authentications.build(:provider => auth[:provider], :uid => auth[:uid],
